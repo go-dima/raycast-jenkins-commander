@@ -1,28 +1,22 @@
 {
   "$schema": "https://www.raycast.com/schemas/extension.json",
-  "name": "jenkins",
-  "title": "Jenkins",
-  "description": "Jenkins Runner Extension",
+  "name": "jenkins-commander",
+  "title": "Jenkins Commander",
+  "description": "An Extension to manage Jenkins jobs - list, trigger and monitor",
   "icon": "jenkins.png",
   "author": "go-dima",
   "license": "MIT",
   "commands": [
     {
-      "name": "search-jenkins",
-      "title": "Search Jenkins",
-      "description": "Display jenkins serach results",
-      "mode": "view"
-    },
-    {
       "name": "jobs",
       "title": "View Jobs",
-      "description": "Display jenkins jobs",
+      "description": "View Jenkins jobs",
       "mode": "view"
     },
     {
       "name": "jenkins-menu-bar",
       "title": "Jobs Progress",
-      "description": "Track progress of user-initiated Jenkins jobs in menu bar",
+      "description": "Track progress of user-initiated Jenkins jobs in menu bar widget",
       "mode": "menu-bar",
       "interval": "1m"
     },
@@ -30,6 +24,12 @@
       "name": "triggered-jobs",
       "title": "Triggered Jobs",
       "description": "View and manage triggered Jenkins jobs",
+      "mode": "view"
+    },
+    {
+      "name": "search-jenkins",
+      "title": "Search Jenkins",
+      "description": "Search Jenkins jobs",
       "mode": "view"
     }
   ],
