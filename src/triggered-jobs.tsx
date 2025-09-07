@@ -1,41 +1,9 @@
 import { List, ActionPanel, Action, Icon, getPreferenceValues } from "@raycast/api";
 import { useCachedPromise } from "@raycast/utils";
 import { JobTracker } from "./services/JobTracker/job-tracker";
-import { formatDuration } from "./common/utils";
-import type { JobStatus, TrackedJob } from "./services/JobTracker/job-tracker.types";
-import { getStatusColor, getStatusIcon, getStatusText } from "./common/job-status.helpers";
-
-function renderJobSection(status: JobStatus, jobs: TrackedJob[], onRemove: () => void) {
-  if (jobs.length === 0) return null;
-
-  return jobs.map((job) => (
-    <List.Item
-      key={job.url}
-      title={job.displayName}
-      subtitle={`${formatDuration(job.startedAt)} ago`}
-      accessories={[
-        {
-          text: job.lastBuildNumber ? `#${job.lastBuildNumber}` : undefined,
-        },
-      ]}
-      icon={{ source: getStatusIcon(status), tintColor: getStatusColor(status) }}
-      actions={
-        <ActionPanel>
-          <Action.OpenInBrowser title="Open in Jenkins" url={job.url} />
-          <Action
-            title="Remove From List"
-            icon={Icon.Trash}
-            style={Action.Style.Destructive}
-            onAction={async () => {
-              await JobTracker.removeTrackedJob(job.url);
-              onRemove();
-            }}
-          />
-        </ActionPanel>
-      }
-    />
-  ));
-}
+import { getStatusText } from "./common/job-status.helpers";
+import { TriggeredJob } from "./components/TriggeredJob";
+import { type JobStatus } from "./services/JobTracker";
 
 export default function Command() {
   const { jenkinsUrl } = getPreferenceValues<{ jenkinsUrl: string }>();
@@ -86,7 +54,9 @@ export default function Command() {
 
             return (
               <List.Section key={status} title={jobs.length > 0 ? sectionTitle : undefined}>
-                {renderJobSection(status, jobs, revalidate)}
+                {jobs.map((job) => (
+                  <TriggeredJob key={job.url} job={job} status={status} onRemove={revalidate} />
+                ))}
               </List.Section>
             );
           })}
